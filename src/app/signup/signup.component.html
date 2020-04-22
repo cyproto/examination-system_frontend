@@ -1,0 +1,117 @@
+<div class="signup-page">
+    <div class="content">
+        <form class="signup-form" fxFlex [formGroup]="signupForm" >
+            <div class="text-center">
+                <h2 class="app-name">Sign Up</h2>
+            </div>
+            <div fxlayout="row" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-form-field style="width: 45%; margin-right: 10%;">
+                        <input matInput placeholder="First Name" [formControl]="signupForm.controls['firstName']" 
+                        [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+                        <mat-error *ngIf="submitted && f.firstName.hasError('required')">
+                            First Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field style="width: 45%;">
+                        <input matInput placeholder="Last Name" [formControl]="signupForm.controls['lastName']">
+                        <mat-error *ngIf="submitted && f.lastName.hasError('required')">
+                            Last Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxlayout="row" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-form-field style="width: 45%; margin-right: 10%;">
+                        <input matInput placeholder="Middle Name" [formControl]="signupForm.controls['middleName']">
+                        <mat-error *ngIf="submitted && f.middleName.hasError('required')">
+                            Middle Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 45%;">
+                        <input placeholder="Date Of Birth" matInput [max]="maxDate" [min]="minDate" [matDatepicker]="dob" [formControl]="signupForm.controls['dob']" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+                                <mat-datepicker #dob disabled="false"></mat-datepicker>
+                        <mat-error *ngIf="submitted && f.dob.hasError('required')">
+                            Date of Birth is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxlayout="row" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-form-field style="width: 45%; margin-right: 10%;">
+                        <input matInput placeholder="Email" [formControl]="signupForm.controls['email']">
+                        <mat-error *ngIf="submitted && f.email.hasError('required')">
+                            Email is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && f.email.hasError('pattern')">
+                            Email is <strong>invalid</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div style="width: 45%;" *ngIf="submitted && userAlreadyExistsFlag">
+                        <strong style="color: red;">Email is already in use. Try another.</strong>
+                    </div>
+                    <mat-form-field style="width: 45%;">
+                        <span matPrefix>+91 &nbsp;</span>
+                        <input matInput placeholder="Phone" pattern="\d+" maxlength="10" minlength="10" [formControl]="signupForm.controls['phone']">
+                        <mat-error *ngIf="submitted && f.phone.hasError('required')">
+                            Phone is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && f.phone.hasError('pattern')">
+                            Phone is <strong>invalid</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxlayout="row" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <mat-form-field style="width: 45%; margin-right: 10%;">
+                        <input type="password" matInput placeholder="Password" [formControl]="signupForm.controls['password']">
+                        <mat-error *ngIf="submitted && f.password.hasError('required')">
+                            Password is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && f.password.hasError('minlength')">
+                            Password must be atleast <strong>6 characters</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="width: 45%;">
+                        <input type="password" matInput placeholder="Repeat Password" [formControl]="signupForm.controls['confirmPassword']">
+                        <mat-error *ngIf="submitted && f.confirmPassword.hasError('required')">
+                            Confirm Password is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && (f.confirmPassword.hasError('mustMatch'))">
+                            <strong>Passwords don't match</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxlayout="row" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <label for="file" style="width: 90%; margin-bottom: 2%;">Upload Photo:</label>
+                        <input #photoUpload type="file" (change)="uploadPhoto($event)"
+                                accept=".png,.jpg" hidden/>
+                        <mat-error *ngIf="submitted && photoDownloadUrl == null">
+                            Photo <strong>required</strong>
+                        </mat-error>
+                        <button style="margin-left: 10px;" color="primary" mat-mini-fab (click)="photoUpload.click()">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                        <div *ngIf="photoDownloadUrl">
+                            View uploaded image:<a target="_blank" href="{{photoDownloadUrl}}"><mat-icon>visibility</mat-icon></a>
+                        </div>
+                    <mat-progress-bar class="image-upload-progress-bar" [value]="(photoUploadProgress | async)">
+                    </mat-progress-bar>
+                </div>
+            </div>
+            <div fxFlex  fxLayout="row" fxLayout.lt-md="column" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    <button style="width: 45%;" mat-raised-button color="primary"  (click)="onSignup()">Sign Up</button>
+                    <button style="width: 45%; margin-left: 10%;" mat-button color="warn" (click)="onCancel()" type="reset">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
