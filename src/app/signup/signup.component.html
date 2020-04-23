@@ -106,10 +106,15 @@
                     </mat-progress-bar>
                 </div>
             </div>
-            <div fxFlex  fxLayout="row" fxLayout.lt-md="column" class="each-row">
+            <div fxFlex style="margin-top: 40px;"fxLayout="row" fxLayout.lt-md="column" class="each-row">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                     <button style="width: 45%;" mat-raised-button color="primary"  (click)="onSignup()">Sign Up</button>
-                    <button style="width: 45%; margin-left: 10%;" mat-button color="warn" (click)="onCancel()" type="reset">Cancel</button>
+                    <button style="width: 45%; margin-left: 10%;" mat-stroked-button color="warn" (click)="onCancel()" type="reset">Cancel</button>
+                </div>
+            </div>
+            <div fxFlex style="text-align: center; margin-top: 30px;"fxLayout="row" fxLayout.lt-md="column" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    Already have an account? <a [routerLinkActive]="'active'" [routerLink]="['/login']">Login instead</a>
                 </div>
             </div>
         </form>

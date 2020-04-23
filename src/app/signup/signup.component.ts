@@ -20,7 +20,7 @@ export class SignupComponent implements OnInit {
   task: any;
   minDate: Date;
   maxDate: Date;
-  submitted = false;
+  submitted: boolean = false;
   usersCollection: any;
   userAlreadyExistsFlag : boolean = false;
   public signupForm: FormGroup;
@@ -72,6 +72,7 @@ export class SignupComponent implements OnInit {
     let formData = this.signupForm.value;
     formData['photoUrl'] = this.photoDownloadUrl;
     formData['password'] = bcrypt.hashSync(this.signupForm.value.password, 10);
+    formData['examSubmittedFlag'] = false;
     delete formData['confirmPassword'];
     this.signupService.addUser(formData);
     this.router.navigate(['/login'], {queryParams: {email: this.signupForm.value.email}});
