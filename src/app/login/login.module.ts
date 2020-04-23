@@ -20,6 +20,6 @@ import { LoginComponent } from './login.component';
       FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
     declarations: [LoginComponent],
-    providers: [AngularFirestore],
+    providers: [AngularFirestore,],
 })
 export class LoginModule {}

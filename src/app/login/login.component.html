@@ -7,23 +7,42 @@
             <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
                 <div fxFlexFill>
                     <mat-form-field class="w-100">
-                        <input matInput placeholder="Registered Email ID" required>
+                        <input matInput placeholder="Registered Email ID" [formControl]="loginForm.controls['email']" [(ngModel)]="autoFillEmail">
+                        <mat-error *ngIf="submitted && f.email.hasError('required')">
+                            Email is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && f.email.hasError('pattern')">
+                            Email is <strong>invalid</strong>
+                        </mat-error>
                     </mat-form-field>
+                    <div style="margin-bottom: 20px;" *ngIf="submitted && !userExistsFlag">
+                        <strong style="color: red;">Account does not exist. Enter a different email or <a [routerLinkActive]="'active'" [routerLink]="['/signup']">get a new account</a>.</strong>
+                    </div>
                 </div>
             </div>
-            <!-- <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
-                <div fxFlexFill>
-                    <mat-form-field class="w-100">
-                        <input matInput type="password" placeholder="Password" [formControl]="loginForm.controls['password']" required>
-                    </mat-form-field>
-                </div>
-            </div> -->
             <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
                 <div fxFlexFill>
-                    <button [disabled]="loginForm.invalid" mat-raised-button color="primary" class="w-100" (click)="onLogin()">Login</button>
+                    <mat-form-field class="w-100">
+                        <input matInput type="password" placeholder="Password" [formControl]="loginForm.controls['password']">
+                        <mat-error *ngIf="submitted && f.password.hasError('required')">
+                            Password is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <div style="margin-bottom: 20px;" *ngIf="submitted && wrongPasswordFlag">
+                        <strong style="color: red;">Wrong password.</strong>
+                    </div>
                 </div>
             </div>
-
+            <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
+                <div fxFlexFill>
+                    <button mat-raised-button color="primary" class="w-100" (click)="onLogin()">Login</button>
+                </div>
+            </div>
+            <div fxFlex style="text-align: center; margin-top: 30px;"fxLayout="row" fxLayout.lt-md="column" class="each-row">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                    New here? <a [routerLinkActive]="'active'" [routerLink]="['/signup']">Create account</a>
+                </div>
+            </div>
         </form>
     </div>
 </div>
