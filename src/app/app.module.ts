@@ -11,6 +11,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 
 const firebaseConfig = {
@@ -40,7 +41,7 @@ firebase.initializeApp(firebaseConfig);
       AngularFireModule.initializeApp(firebaseConfig),
       AngularFireStorageModule,
   ],
-  providers: [AngularFirestore],
+  providers: [AngularFirestore, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

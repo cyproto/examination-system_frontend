@@ -10,6 +10,15 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: './signup/signup.module#SignupModule'
+  },
+  {
+    path: 'exam-app',
+    loadChildren: './exam-app/exam-app.module#ExamAppModule',
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: '**', 
+    redirectTo: 'login' 
   }
 ];
 
