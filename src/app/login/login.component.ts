@@ -56,7 +56,9 @@ export class LoginComponent implements OnInit {
               console.log('login');
               this.wrongPasswordFlag = false;
               sessionStorage.setItem('isLoggedIn',JSON.stringify('true'));
-              sessionStorage.setItem('user',this.loginForm.value.email);
+              sessionStorage.setItem('userEmail',this.loginForm.value.email);
+              sessionStorage.setItem('isExamSubmittedFlag',result.isExamSubmittedFlag);
+              sessionStorage.setItem('isGivingTestFirstTimeFlag',result.isGivingTestFirstTimeFlag);
               this.router.navigate(['/exam-app']);
             } else {
               console.log('wrong pass');

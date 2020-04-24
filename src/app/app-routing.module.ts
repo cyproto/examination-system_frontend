@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'exam-app',
     loadChildren: './exam-app/exam-app.module#ExamAppModule',
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
   { 
     path: '**', 

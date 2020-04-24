@@ -72,7 +72,8 @@ export class SignupComponent implements OnInit {
     let formData = this.signupForm.value;
     formData['photoUrl'] = this.photoDownloadUrl;
     formData['password'] = bcrypt.hashSync(this.signupForm.value.password, 10);
-    formData['examSubmittedFlag'] = false;
+    formData['isExamSubmittedFlag'] = false;
+    formData['isGivingTestFirstTimeFlag'] = true;
     delete formData['confirmPassword'];
     this.signupService.addUser(formData);
     this.router.navigate(['/login'], {queryParams: {email: this.signupForm.value.email}});
