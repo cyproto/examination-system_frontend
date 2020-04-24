@@ -1,0 +1,101 @@
+<div class="instructions-div" *ngIf="isGivingTestFirstTimeFlag">
+    <h1 class="instructions-header" style="text-align: center;">
+        Instructions
+    </h1>
+    <h4 style="text-align: right;">
+        <span class="instruction-timer-text">Test will start in<span class="instruction-timer-span"> 00 :
+                {{instructionPageTimer}} s</span></span>
+    </h4>
+    <mat-list>
+        <mat-list-item>
+            <mat-icon mat-list-icon>emoji_objects</mat-icon>
+            <div mat-line>Exam has a total of <span style="font-weight: bold;">10 questions</span>. All questions are
+                <span style="font-weight: bold;">MCQ</span>.</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+            <mat-icon mat-list-icon>emoji_objects</mat-icon>
+            <div mat-line><span style="font-weight: bold;">Do not</span> click back button anytime while taking the
+                test.</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+            <mat-icon mat-list-icon>emoji_objects</mat-icon>
+            <div mat-line><span style="font-weight: bold;">No</span> negative marking</div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+            <mat-icon mat-list-icon>emoji_objects</mat-icon>
+            <div mat-line>Total time for exam is <span style="font-weight: bold;">10 mins</span>.</div>
+        </mat-list-item>
+    </mat-list>
+    <div class="start-test-button-div" fxLayout="row wrap" fxLayoutAlign="center">
+        <button color="primary" class="start-test-button" mat-raised-button (click)="startTest()">
+            <h3>Start Test</h3>
+        </button>
+    </div>
+</div>
+<div *ngIf="isStartTestClicked" style="margin: 5%;">
+    <h2 style="text-align: right; margin-right: 20px;">
+        <span class="test-timer-text">Test ends in</span>
+        <span class="instruction-timer-span"> 00 : {{instructionPageTimer}} s</span>
+    </h2>
+    <div fxLayout="row wrap" style="margin-top: 10%;">
+        <div fxLayoutAlign="space-between center" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <div *ngFor="let question of questionsArray; let questionIndex = index;">
+                <div matRipple
+                    [ngClass]="{ 'mat-elevation-z8':questionIndex==currentQuestionIndex, 'unselected-question': questionIndex!=currentQuestionIndex, 'selected-question':questionIndex==currentQuestionIndex}"
+                    class="question-number-div mat-elevation-z2" (click)="switchCurrentQuestion(questionIndex)">
+                    Q{{questionIndex+1}}<span *ngIf="question.selectedOption || question.isBookmarked" style="margin-right: 5px;"></span>
+                    <div class="question-icons">
+                        <mat-icon [inline]="true" *ngIf="question.selectedOption">check_circle</mat-icon>
+                    </div>
+                    <div class="question-icons">
+                        <mat-icon [inline]="true" *ngIf="question.isBookmarked">bookmark</mat-icon>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 5%; vertical-align: middle;">
+        <div class="current-question-div" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            {{currentQuestion.question}}
+        </div>
+    </div>
+    <mat-radio-group [(ngModel)]="currentQuestion.selectedOption">
+        <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 3%; vertical-align: middle;">
+            <mat-radio-button class="current-option-div" value="option_1"><span
+                    class="option-span">{{currentQuestion.option_1}}</span></mat-radio-button>
+            <mat-radio-button class="current-option-div" style="margin-left: 4%;" value="option_2"><span
+                    class="option-span">{{currentQuestion.option_2}}</span></mat-radio-button>
+        </div>
+        <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 2%; vertical-align: middle;">
+            <mat-radio-button class="current-option-div" value="option_3"><span
+                    class="option-span">{{currentQuestion.option_3}}</span></mat-radio-button>
+            <mat-radio-button class="current-option-div" style="margin-left: 4%;" value="option_4"><span
+                    class="option-span">{{currentQuestion.option_4}}</span></mat-radio-button>
+        </div>
+    </mat-radio-group>
+    <div fxLayout="row wrap">
+        <div class="bookmark-div" fxLayoutAlign="end" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <span style="font-weight: bold; display: flex; align-items: center; justify-content: center;">Bookmark question:</span>
+            <button mat-icon-button (click)="toggleBookmark()">
+                <div *ngIf="currentQuestion.isBookmarked" class="bookmark-icon">
+                    <mat-icon [inline]="true">bookmark</mat-icon>
+                </div>
+                <div *ngIf="!currentQuestion.isBookmarked" class="bookmark-icon">
+                    <mat-icon [inline]="true">bookmark_border</mat-icon>
+                </div>
+            </button>
+            
+        </div>
+    </div>
+    <div fxLayout="row wrap">
+        <div fxLayoutAlign="space-between center" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                <div *ngIf="currentQuestionIndex == 0"></div>
+                <button class="next-button" *ngIf="currentQuestionIndex != 0" (click)="switchCurrentQuestion(currentQuestionIndex-1)" color="primary" mat-raised-button><mat-icon>arrow_back_ios</mat-icon>Previous</button>
+                <button class="previous-button" *ngIf="currentQuestionIndex != 9" (click)="switchCurrentQuestion(currentQuestionIndex+1)" color="primary" mat-raised-button>Next<mat-icon>arrow_forward_ios</mat-icon></button>
+        </div>
+    </div>
+</div>
