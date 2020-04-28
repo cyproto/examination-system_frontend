@@ -2,17 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExamAppComponent } from './exam-app.component';
 import { ExamAppRoutingModule } from './exam-app-routing.module';
-import { MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule, MatIconModule, MatListModule, MatDividerModule, MatRippleModule } from '@angular/material';
+import { MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule, MatIconModule, MatListModule, MatDividerModule, MatRippleModule, MatDialogModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TestComponent } from './test/test.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ConfirmSubmitComponent } from './test/confirm-submit/confirm-submit.component';
+import { AfterTestSubmitComponent } from './test/after-test-submit/after-test-submit.component';
 
 
 
 @NgModule({
-  declarations: [ExamAppComponent, TestComponent, ProfileComponent],
+  declarations: [ExamAppComponent, TestComponent, ProfileComponent, ConfirmSubmitComponent, AfterTestSubmitComponent],
   imports: [
     CommonModule,
     ExamAppRoutingModule,
@@ -30,10 +32,14 @@ import { ProfileComponent } from './profile/profile.component';
     MatDividerModule,
     MatRippleModule,
     MatRadioModule,
+    MatDialogModule,
     FlexLayoutModule.withConfig({addFlexToParent: false})
   ],
   providers:[
     AngularFirestore
+  ],
+  entryComponents: [
+    ConfirmSubmitComponent
   ]
 })
 export class ExamAppModule { }

@@ -35,7 +35,7 @@
         </button>
     </div>
 </div>
-<div *ngIf="isStartTestClicked" style="margin: 5%;">
+<div *ngIf="isStartTestClicked && currentQuestion" style="margin: 5%;">
     <h2 style="text-align: right; margin-right: 20px;">
         <span class="test-timer-text">Test ends in</span>
         <span class="instruction-timer-span"> 00 : {{instructionPageTimer}} s</span>
@@ -63,17 +63,17 @@
             {{currentQuestion.question}}
         </div>
     </div>
-    <mat-radio-group [(ngModel)]="currentQuestion.selectedOption">
+    <mat-radio-group *ngIf="currentQuestion" [(ngModel)]="currentQuestion.selectedOption">
         <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 3%; vertical-align: middle;">
-            <mat-radio-button class="current-option-div" value="option_1"><span
+            <mat-radio-button color="primary" class="current-option-div" value="option_1"><span
                     class="option-span">{{currentQuestion.option_1}}</span></mat-radio-button>
-            <mat-radio-button class="current-option-div" style="margin-left: 4%;" value="option_2"><span
+            <mat-radio-button color="primary" class="current-option-div" style="margin-left: 4%;" value="option_2"><span
                     class="option-span">{{currentQuestion.option_2}}</span></mat-radio-button>
         </div>
         <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 2%; vertical-align: middle;">
-            <mat-radio-button class="current-option-div" value="option_3"><span
+            <mat-radio-button color="primary" class="current-option-div" value="option_3"><span
                     class="option-span">{{currentQuestion.option_3}}</span></mat-radio-button>
-            <mat-radio-button class="current-option-div" style="margin-left: 4%;" value="option_4"><span
+            <mat-radio-button color="primary" class="current-option-div" style="margin-left: 4%;" value="option_4"><span
                     class="option-span">{{currentQuestion.option_4}}</span></mat-radio-button>
         </div>
     </mat-radio-group>
@@ -94,6 +94,7 @@
     <div fxLayout="row wrap">
         <div fxLayoutAlign="space-between center" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                 <div *ngIf="currentQuestionIndex == 0"></div>
+                <button class="submit-button" *ngIf="currentQuestionIndex == 9" (click)="submitTest()" color="primary" mat-raised-button>Submit Test <mat-icon>check_circle</mat-icon></button>
                 <button class="next-button" *ngIf="currentQuestionIndex != 0" (click)="switchCurrentQuestion(currentQuestionIndex-1)" color="primary" mat-raised-button><mat-icon>arrow_back_ios</mat-icon>Previous</button>
                 <button class="previous-button" *ngIf="currentQuestionIndex != 9" (click)="switchCurrentQuestion(currentQuestionIndex+1)" color="primary" mat-raised-button>Next<mat-icon>arrow_forward_ios</mat-icon></button>
         </div>
