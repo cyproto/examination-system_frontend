@@ -1,4 +1,4 @@
-<div class="instructions-div" *ngIf="isGivingTestFirstTimeFlag">
+<div *ngIf="isGivingTestFirstTimeFlag == true && !isStartTestClicked" class="instructions-div" >
     <h1 class="instructions-header" style="text-align: center;">
         Instructions
     </h1>
