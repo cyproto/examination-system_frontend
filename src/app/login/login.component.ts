@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
               sessionStorage.setItem('isExamSubmittedFlag',result.isExamSubmittedFlag);
               sessionStorage.setItem('isGivingTestFirstTimeFlag',result.isGivingTestFirstTimeFlag);
               this.router.navigate(['/exam-app']);
+              this.loginForm.reset();
             } else {
               console.log('wrong pass');
               this.wrongPasswordFlag = true;
