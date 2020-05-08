@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ExamAppComponent } from './exam-app.component';
 import { TestComponent } from './test/test.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AfterTestSubmitComponent } from './test/after-test-submit/after-test-submit.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent
+            },
+            {
+                path: 'after-test-submit',
+                component: AfterTestSubmitComponent
             }
         ]
     }
