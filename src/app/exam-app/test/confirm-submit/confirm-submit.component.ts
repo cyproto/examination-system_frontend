@@ -10,6 +10,9 @@ export class ConfirmSubmitComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ConfirmSubmitComponent>,
     @Inject(MAT_DIALOG_DATA) public data) {
+      if( data['isAutoSubmit'] ) {
+        this.onConfirm();
+      }
   }
 
   ngOnInit() {

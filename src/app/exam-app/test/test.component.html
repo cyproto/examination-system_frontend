@@ -1,4 +1,4 @@
-<div *ngIf="isGivingTestFirstTimeFlag == true && !isStartTestClicked" class="instructions-div" >
+<div *ngIf="isGivingTestFirstTimeFlag == 'true' && !isStartTestClicked" class="instructions-div" >
     <h1 class="instructions-header" style="text-align: center;">
         Instructions
     </h1>
@@ -38,7 +38,7 @@
 <div *ngIf="isStartTestClicked && currentQuestion" style="margin: 5%;">
     <h2 style="text-align: right; margin-right: 20px;">
         <span class="test-timer-text">Test ends in</span>
-        <span class="instruction-timer-span"> 00 : {{instructionPageTimer}} s</span>
+        <span class="instruction-timer-span"> {{ testMinutes }} m {{ testSeconds }} s</span>
     </h2>
     <div fxLayout="row wrap" style="margin-top: 10%;">
         <div fxLayoutAlign="space-between center" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
@@ -94,7 +94,7 @@
     <div fxLayout="row wrap">
         <div fxLayoutAlign="space-between center" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                 <div *ngIf="currentQuestionIndex == 0"></div>
-                <button class="submit-button" *ngIf="currentQuestionIndex == 9" (click)="submitTest()" color="primary" mat-raised-button>Submit Test <mat-icon>check_circle</mat-icon></button>
+                <button class="submit-button" *ngIf="currentQuestionIndex == 9" (click)="submitTest( false )" color="primary" mat-raised-button>Submit Test <mat-icon>check_circle</mat-icon></button>
                 <button class="next-button" *ngIf="currentQuestionIndex != 0" (click)="switchCurrentQuestion(currentQuestionIndex-1)" color="primary" mat-raised-button><mat-icon>arrow_back_ios</mat-icon>Previous</button>
                 <button class="previous-button" *ngIf="currentQuestionIndex != 9" (click)="switchCurrentQuestion(currentQuestionIndex+1)" color="primary" mat-raised-button>Next<mat-icon>arrow_forward_ios</mat-icon></button>
         </div>

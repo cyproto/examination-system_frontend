@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AngularFirestore, } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material';
 import { ConfirmSubmitComponent } from './confirm-submit/confirm-submit.component';
 import { TestService } from './test.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-test',
@@ -23,6 +24,9 @@ export class TestComponent implements OnInit {
   isStartTestClicked: boolean = false;
   instructionPageTimer: number = 5;
   testTimer: number = 600;
+  testSeconds: string = '';
+  testMinutes: string = '';
+  testEndTimeStamp: number = 0;
   constructor(private testService: TestService, private dialog: MatDialog, private angularFirestore: AngularFirestore, private router: Router, public activatedRoute: ActivatedRoute) { 
     
     this.usersCollection = this.angularFirestore.collection('users');
@@ -31,14 +35,18 @@ export class TestComponent implements OnInit {
     this.isGivingTestFirstTimeFlag = sessionStorage.getItem('isGivingTestFirstTimeFlag');
     console.log(this.isGivingTestFirstTimeFlag);
     router.events.subscribe((event: NavigationStart) => {
-        if (event.navigationTrigger === 'popstate') {
+        if (event.navigationTrigger === 'popstate' || 'null' == this.userEmail ) {
           this.router.navigate(['../../login'])
         }
       });
   }
 
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+    //this.logoutUser();
+  }
+
   ngOnInit() {
-    if( true == this.isGivingTestFirstTimeFlag ){ 
+    if( this.isGivingTestFirstTimeFlag === 'true' ) { 
       this.interval = setInterval(() => {
         if( this.instructionPageTimer > 0 ){
           this.instructionPageTimer --;
@@ -48,9 +56,48 @@ export class TestComponent implements OnInit {
         }
       }, 1000)
     } else {
-      this.isStartTestClicked = true;
-      this.startTest();
+      console.log(this.validateIfTestTimeIsOver());
+      if( false == this.validateIfTestTimeIsOver() ) {
+        console.log('sadasd');
+        this.isStartTestClicked = true;
+        this.startTest();
+        this.testTimer = this.testEndTimeStamp - Date.now()/1000;
+        this.interval = setInterval(() => {
+          if( this.testTimer > 0 ){
+            this.testTimer --;
+            this.testMinutes = ( '0' + Math.floor( this.testTimer/60 ).toString() ).slice( -2 );
+            this.testSeconds = ( '0' + ( this.testTimer % 60 ).toString() ).slice( -2 );
+          }
+          else {
+            this.submitTest( true );
+          }
+        }, 1000)
+      } else {
+        let user = {
+          isExamSubmittedFlag: true
+        }
+        this.testService.updateUser(this.userEmail, user);
+        this.logoutUser();
+      }
     }    
+  }
+
+  validateIfTestTimeIsOver(): boolean {
+    let ifTestTimeIsOverFlag: boolean;
+    firebase.firestore().collection( 'users' ).where(firebase.firestore.FieldPath.documentId(), '==', this.userEmail).get()
+    .then( result => {
+      result.forEach( element => {
+        console.log(element.data()['testEndTimeStamp']);
+        console.log(Math.round( Date.now()/1000 ));
+        if( element.data()['testEndTimeStamp'] > Math.round( Date.now()/1000 ) ) {
+          this.testEndTimeStamp = element.data()['testEndTimeStamp'];
+          ifTestTimeIsOverFlag = false;
+        } 
+        ifTestTimeIsOverFlag = true; 
+      });
+    });
+    console.log(ifTestTimeIsOverFlag);
+    return ifTestTimeIsOverFlag;
   }
 
   startTest(){
@@ -59,7 +106,7 @@ export class TestComponent implements OnInit {
     clearInterval(this.interval);
     this.isStartTestClicked = true;
     console.log(this.isGivingTestFirstTimeFlag);
-    if( true == this.isGivingTestFirstTimeFlag ) { 
+    if( 'true' == this.isGivingTestFirstTimeFlag ) { 
       console.log(this.isGivingTestFirstTimeFlag);
       this.isGivingTestFirstTimeFlag = false;
       this.angularFirestore.collection('questions').valueChanges().subscribe(result => {
@@ -86,18 +133,22 @@ export class TestComponent implements OnInit {
         console.log(this.questionsArray);
         let user = {
           examQuestions: this.questionsArray,
-          isGivingTestFirstTimeFlag: this.isGivingTestFirstTimeFlag
+          isGivingTestFirstTimeFlag: this.isGivingTestFirstTimeFlag,
+          testStartTimeStamp: Math.round( Date.now()/1000 ),
+          testEndTimeStamp: Math.round( Date.now()/1000 + 600 ),
         }
         this.testService.updateUser(this.userEmail, user);
-        sessionStorage.setItem('isGivingTestFirstTimeFlag', this.isGivingTestFirstTimeFlag);
+        sessionStorage.setItem('isGivingTestFirstTimeFlag', JSON.stringify( this.isGivingTestFirstTimeFlag ) );
       });
     } else {
-      this.usersCollection.doc(this.userEmail).valueChanges().subscribe( result => {
-        console.log(result);
-        this.questionsArray = [];
-        this.questionsArray = result['examQuestions'];
-        this.currentQuestion = this.questionsArray[0];
-        this.currentQuestionIndex = 0;
+      firebase.firestore().collection( 'users' ).where(firebase.firestore.FieldPath.documentId(), '==', this.userEmail).get()
+      .then( result => {
+        result.forEach( element => {
+          this.questionsArray = [];
+          this.questionsArray = element.data()['examQuestions'];
+          this.currentQuestion = this.questionsArray[0];
+          this.currentQuestionIndex = 0;
+        });
       });
       console.log(this.questionsArray);
     }
@@ -114,16 +165,17 @@ export class TestComponent implements OnInit {
     console.log(this.questionsArray)
   }
 
-  submitTest(){
+  submitTest( isAutoSubmit ){
     this.questionsArray[this.currentQuestionIndex] = this.currentQuestion;
     console.log(this.questionsArray);
     const dialogRef = this.dialog.open(ConfirmSubmitComponent, {
-      data: { userEmail: this.userEmail, examData: this.questionsArray }
+      data: { isAutoSubmit: isAutoSubmit }
     })
     dialogRef.afterClosed().subscribe(result => {
       if( result ) {
+        clearInterval(this.interval);
         this.isExamSubmittedFlag = true;
-        sessionStorage.setItem('isExamSubmittedFlag', this.isExamSubmittedFlag);
+        sessionStorage.setItem('isExamSubmittedFlag', JSON.stringify(this.isExamSubmittedFlag));
         let user = {
           isExamSubmittedFlag: this.isExamSubmittedFlag,
           examQuestions: this.questionsArray
@@ -131,9 +183,14 @@ export class TestComponent implements OnInit {
         this.testService.updateUser(this.userEmail, user);
         this.router.navigate(['after-test-submit'], {relativeTo: this.activatedRoute})
       } else {
-        console.log('no');
+        return;
       }
     });
+  }
+
+  logoutUser() {
+    sessionStorage.setItem( 'userEmail', null );
+    this.router.navigate(['../../login']);
   }
 
   toggleBookmark(){
