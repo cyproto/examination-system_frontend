@@ -22,7 +22,7 @@ export class TestComponent implements OnInit {
   isExamSubmittedFlag: any;
   isGivingTestFirstTimeFlag: any;
   isStartTestClicked: boolean = false;
-  instructionPageTimer: number = 5;
+  instructionPageTimer: number = 60;
   testTimer: number = 600;
   testSeconds: string = '';
   testMinutes: string = '';
@@ -48,62 +48,54 @@ export class TestComponent implements OnInit {
   ngOnInit() {
     if( this.isGivingTestFirstTimeFlag === 'true' ) { 
       this.interval = setInterval(() => {
-        if( this.instructionPageTimer > 0 ){
+        if( this.instructionPageTimer > 0 ) {
           this.instructionPageTimer --;
         }
         else {
           this.startTest();
         }
-      }, 1000)
+      }, 1000 )
     } else {
-      console.log(this.validateIfTestTimeIsOver());
-      if( false == this.validateIfTestTimeIsOver() ) {
-        console.log('sadasd');
-        this.isStartTestClicked = true;
-        this.startTest();
-        this.testTimer = this.testEndTimeStamp - Date.now()/1000;
-        this.interval = setInterval(() => {
-          if( this.testTimer > 0 ){
-            this.testTimer --;
-            this.testMinutes = ( '0' + Math.floor( this.testTimer/60 ).toString() ).slice( -2 );
-            this.testSeconds = ( '0' + ( this.testTimer % 60 ).toString() ).slice( -2 );
-          }
-          else {
-            this.submitTest( true );
-          }
-        }, 1000)
-      } else {
-        let user = {
-          isExamSubmittedFlag: true
-        }
-        this.testService.updateUser(this.userEmail, user);
-        this.logoutUser();
-      }
-    }    
+      this.startTest();
+    }
   }
 
-  validateIfTestTimeIsOver(): boolean {
+  startTestTimer() {
+    this.interval = setInterval(() => {
+      if( this.testTimer > 0 ){
+        this.testTimer --;
+        this.testMinutes = ( '0' + Math.floor( this.testTimer/60 ).toString() ).slice( -2 );
+        this.testSeconds = ( '0' + ( this.testTimer%60 ).toString() ).slice( -2 );
+      } else {
+      this.submitTest( true );
+      }
+    }, 1000 ) 
+  }
+
+  async validateIfTestTimeIsOver(): Promise<Boolean> {
     let ifTestTimeIsOverFlag: boolean;
-    firebase.firestore().collection( 'users' ).where(firebase.firestore.FieldPath.documentId(), '==', this.userEmail).get()
+    await firebase.firestore().collection( 'users' ).where(firebase.firestore.FieldPath.documentId(), '==', this.userEmail).get()
     .then( result => {
       result.forEach( element => {
         console.log(element.data()['testEndTimeStamp']);
         console.log(Math.round( Date.now()/1000 ));
         if( element.data()['testEndTimeStamp'] > Math.round( Date.now()/1000 ) ) {
+          console.log('in validate');
           this.testEndTimeStamp = element.data()['testEndTimeStamp'];
           ifTestTimeIsOverFlag = false;
-        } 
-        ifTestTimeIsOverFlag = true; 
+        } else { 
+          ifTestTimeIsOverFlag = true; 
+        }
       });
     });
     console.log(ifTestTimeIsOverFlag);
     return ifTestTimeIsOverFlag;
   }
 
-  startTest(){
-    console.log(this.questionsArray);
-    
+  async startTest() {
+
     clearInterval(this.interval);
+    this.startTestTimer();
     this.isStartTestClicked = true;
     console.log(this.isGivingTestFirstTimeFlag);
     if( 'true' == this.isGivingTestFirstTimeFlag ) { 
@@ -150,7 +142,18 @@ export class TestComponent implements OnInit {
           this.currentQuestionIndex = 0;
         });
       });
-      console.log(this.questionsArray);
+      if( !await this.validateIfTestTimeIsOver() ) {
+        console.log('sadasd');
+        this.isStartTestClicked = true;
+        this.testTimer = this.testEndTimeStamp - Math.round( Date.now()/1000 );
+        console.log(this.testTimer);
+      } else {
+        let user = {
+          isExamSubmittedFlag: true
+        }
+        this.testService.updateUser(this.userEmail, user);
+        this.logoutUser();
+      }
     }
   }
 
@@ -160,6 +163,10 @@ export class TestComponent implements OnInit {
       return;
     }
     this.questionsArray[this.currentQuestionIndex] = this.currentQuestion;
+    let user = {
+      examQuestions: this.questionsArray
+    }
+    this.testService.updateUser(this.userEmail, user);
     this.currentQuestion = this.questionsArray[index];
     this.currentQuestionIndex = index;
     console.log(this.questionsArray)
