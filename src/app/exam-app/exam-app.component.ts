@@ -10,18 +10,19 @@ import { PlatformLocation } from '@angular/common';
 export class ExamAppComponent implements OnInit {
 
   constructor(private location: PlatformLocation, private router: Router, public activatedRoute: ActivatedRoute) { 
-    this.router.navigate(['test'], {relativeTo: this.activatedRoute})
+    if( 'true' == sessionStorage.getItem('isExamSubmittedFlag') ){
+      this.router.navigate(['profile'], {relativeTo: this.activatedRoute});
+    } else {
+      this.router.navigate(['test'], {relativeTo: this.activatedRoute})
+    }
+    
   }
 
   ngOnInit() {
     console.log(sessionStorage.getItem('isGivingTestFirstTimeFlag'));
     console.log(sessionStorage.getItem('isExamSubmittedFlag'));
+  
     
-    // if( !sessionStorage.getItem('isExamSubmittedFlag') ){
-      
-    // } else {
-    //   this.router.navigate(['profile'])
-    // }
   }
 
 }
