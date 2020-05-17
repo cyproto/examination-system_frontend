@@ -1,0 +1,73 @@
+.outer-div {
+    margin: 5%;
+}
+
+.profile-image {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: top center;
+}
+
+.profile-header{
+    background-color: black;
+    color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 20px;
+    letter-spacing: 3px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.profile-info-div {
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 90%;
+    margin-left: 5%;
+}
+
+.result-summary-header {
+    background-color: black;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 5%;
+}
+
+.result-summary-subtitle {
+    margin-left: 30%;
+}
+
+.result-summary-data {
+    margin-left: 25%;
+}
+
+.passed-class {
+    background-color: #00bdaa;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.failed-class {
+    background-color: #d9455f;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.download-result-button {
+    background-color: #0779e4;
+    color: white;
+}

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-profile',
@@ -7,7 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  userEmail: string = '';
+  userProfile: any;
+  constructor( private angularFirestore: AngularFirestore ) { 
+    this.userEmail = sessionStorage.getItem( 'userEmail' );
+    firebase.firestore().collection( 'users' ).where( firebase.firestore.FieldPath.documentId(), '==', this.userEmail ).get()
+    .then( result => {
+      result.forEach( element => {
+        this.userProfile = element.data();
+        console.log( this.userProfile );
+      });
+    });
+  }
 
   ngOnInit() {
   }

@@ -1,1 +1,67 @@
-<p>profile works!</p>
+<div class="outer-div" *ngIf="userProfile">
+    <div fxLayout="row wrap" style=" display:flex; align-items: center; justify-content: center;">
+        <h2 class="profile-header">
+            Result
+        </h2>
+    </div>
+    <div fxLayout="row wrap" class="profile-info-div mat-elevation-z4">
+        <div style="display:flex; align-items: center; justify-content: center;" fxFlex.gt-sm="30" fxFlex.gt-xs="30" fxFlex="100">
+            <img class="profile-image" src="{{ userProfile.photoUrl }}">
+        </div>
+        <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" fxFlex="100">
+            <div><h2><strong>{{ userProfile.firstName }} {{ userProfile.lastName }}</strong></h2></div>
+            <div><h4><span class="profile-subtitle-span">Phone : </span>{{ userProfile.phone }}</h4></div>
+            <div><h4><span class="profile-subtitle-span">Email : </span>{{ userProfile.email }}</h4></div>
+            <div><h4><span class="profile-subtitle-span">Date of Birth : </span>{{ userProfile.dob.toDate() | date }}</h4></div>
+        </div>
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <h3>
+                <span class="result-summary-header">
+                    Result Summary :
+                </span>
+            </h3>
+        </div>
+        <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+           <h3 class="result-summary-subtitle"> Grade : </h3>
+        </div>
+        <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+           <h3 class="result-summary-data"><span [ngClass]="(true==true)?'passed-class':'failed-class'">Passed</span></h3>
+        </div>
+        <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-subtitle"> Correct Answers : </h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-data"><span>5 / 10</span></h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-subtitle"> Attempted Questions : </h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-data"><span>7 / 10</span></h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-subtitle"> Percentage : </h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-data"><span>50 %</span></h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-subtitle"> Examination date : </h3>
+         </div>
+         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="result-summary-data"><span>{{ userProfile.testEndTimeStamp*1000 | date }}</span></h3>
+         </div>
+         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" style="text-align: center;">
+            <button class="download-result-button" mat-raised-button>Download result <mat-icon>arrow_downward</mat-icon></button>
+         </div>
+    </div>
+    <div style="margin-top: 50px;" fxLayout="row wrap">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <h3>
+                <span class="result-summary-header">
+                    Result Overview :
+                </span>
+            </h3>
+        </div>
+    </div>
+</div>
