@@ -188,7 +188,7 @@ export class TestComponent implements OnInit {
           examQuestions: this.questionsArray
         }
         this.testService.updateUser(this.userEmail, user);
-        this.router.navigate(['after-test-submit'], {relativeTo: this.activatedRoute})
+        this.router.navigate(['./after-test-submit'], {relativeTo: this.activatedRoute})
       } else {
         return;
       }
