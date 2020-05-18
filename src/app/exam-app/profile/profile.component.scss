@@ -71,3 +71,32 @@
     background-color: #0779e4;
     color: white;
 }
+
+.current-question-div{
+    border-radius: 20px;
+    padding: 30px;
+    background-color: #e9e9e7;
+    font-weight: bolder;
+}
+
+.current-option-div{
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    width: 45%;
+    word-wrap: break-word;
+    font-weight: bold;
+}
+
+.option-span{
+    white-space: normal;
+    color: black;
+}
+
+.correct-option-class {
+    background-color: #75daad;
+}
+
+.wrong-option-class {
+    background-color: #ffbaba;
+}

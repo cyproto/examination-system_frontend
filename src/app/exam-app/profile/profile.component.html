@@ -4,7 +4,7 @@
             Result
         </h2>
     </div>
-    <div fxLayout="row wrap" class="profile-info-div mat-elevation-z4">
+    <div id="resultDiv" fxLayout="row wrap" class="profile-info-div mat-elevation-z4">
         <div style="display:flex; align-items: center; justify-content: center;" fxFlex.gt-sm="30" fxFlex.gt-xs="30" fxFlex="100">
             <img class="profile-image" src="{{ userProfile.photoUrl }}">
         </div>
@@ -25,25 +25,25 @@
            <h3 class="result-summary-subtitle"> Grade : </h3>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-           <h3 class="result-summary-data"><span [ngClass]="(true==true)?'passed-class':'failed-class'">Passed</span></h3>
+           <h3 class="result-summary-data"><span [ngClass]="(grade=='Passed')?'passed-class':'failed-class'">{{grade}}</span></h3>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-subtitle"> Correct Answers : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-data"><span>5 / 10</span></h3>
+            <h3 class="result-summary-data"><span>{{correctAnswersCount}} / {{questionsCount}}</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-subtitle"> Attempted Questions : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-data"><span>7 / 10</span></h3>
+            <h3 class="result-summary-data"><span>{{attemptedQuestionsCount}} / {{questionsCount}}</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-subtitle"> Percentage : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-data"><span>50 %</span></h3>
+            <h3 class="result-summary-data"><span>{{percentage}} %</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-subtitle"> Examination date : </h3>
@@ -51,10 +51,10 @@
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-data"><span>{{ userProfile.testEndTimeStamp*1000 | date }}</span></h3>
          </div>
-         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" style="text-align: center;">
-            <button class="download-result-button" mat-raised-button>Download result <mat-icon>arrow_downward</mat-icon></button>
-         </div>
     </div>
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" style="text-align: right; margin-top: 30px; margin-right: 5%;">
+        <button class="download-result-button" (click)="saveResult()" mat-raised-button>Download result <mat-icon>arrow_downward</mat-icon></button>
+     </div>
     <div style="margin-top: 50px;" fxLayout="row wrap">
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
             <h3>
@@ -63,5 +63,32 @@
                 </span>
             </h3>
         </div>
+    </div>
+    <div *ngFor="let currentQuestion of questionsData; let currentQuestionIndex = index;">
+        <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 5%; vertical-align: middle;">
+            <div class="current-question-div" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               Q{{ currentQuestionIndex+1 }}) {{currentQuestion.question}}
+            </div>
+        </div>
+        <mat-radio-group *ngIf="currentQuestion" [(ngModel)]="currentQuestion.selectedOption" [disabled]="true">
+            <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 3%; vertical-align: middle;">
+                <mat-radio-button #radio_button_1 color="primary" class="current-option-div" value="option_1"
+                [ngClass]="{'correct-option-class':radio_button_1.value===currentQuestion.selectedOption && currentQuestion.selectedOption===currentQuestion.correct_option || radio_button_1.value===currentQuestion.correct_option,
+                    'wrong-option-class':radio_button_1.value===currentQuestion.selectedOption && currentQuestion.selectedOption!==currentQuestion.correct_option }">
+                    <span class="option-span">{{currentQuestion.option_1}}</span></mat-radio-button>
+                <mat-radio-button #radio_button_2 color="primary" class="current-option-div" style="margin-left: 4%;" value="option_2"
+                [ngClass]="{'correct-option-class':radio_button_2.value===currentQuestion.selectedOption && currentQuestion.selectedOption===currentQuestion.correct_option || radio_button_2.value===currentQuestion.correct_option,
+                    'wrong-option-class':radio_button_2.value===currentQuestion.selectedOption && currentQuestion.selectedOption!==currentQuestion.correct_option }"><span
+                        class="option-span">{{currentQuestion.option_2}}</span></mat-radio-button>
+            </div>
+            <div fxLayout="row wrap" *ngIf="currentQuestion" style="margin-top: 2%; vertical-align: middle;">
+                <mat-radio-button #radio_button_3 color="primary" class="current-option-div" value="option_3" [ngClass]="{'correct-option-class':radio_button_3.value===currentQuestion.selectedOption && currentQuestion.selectedOption===currentQuestion.correct_option || radio_button_3.value===currentQuestion.correct_option,
+                'wrong-option-class':radio_button_3.value===currentQuestion.selectedOption && currentQuestion.selectedOption!==currentQuestion.correct_option }"><span
+                        class="option-span">{{currentQuestion.option_3}}</span></mat-radio-button>
+                <mat-radio-button #radio_button_4 color="primary" class="current-option-div" style="margin-left: 4%;" value="option_4" [ngClass]="{'correct-option-class':radio_button_4.value===currentQuestion.selectedOption && currentQuestion.selectedOption===currentQuestion.correct_option || radio_button_4.value===currentQuestion.correct_option,
+                'wrong-option-class':radio_button_4.value===currentQuestion.selectedOption && currentQuestion.selectedOption!==currentQuestion.correct_option }"><span
+                        class="option-span">{{currentQuestion.option_4}}</span></mat-radio-button>
+            </div>
+        </mat-radio-group>
     </div>
 </div>
