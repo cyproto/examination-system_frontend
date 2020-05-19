@@ -34,7 +34,8 @@
     "@angular/material": "^8.2.3",
     "bcryptjs": "2.4.3",
     "html2canvas": "1.0.0-rc.5",
-    "jspdf": "1.5.3"
+    "jspdf": "1.5.3",
+    "dom-to-image": "2.6.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.12",
