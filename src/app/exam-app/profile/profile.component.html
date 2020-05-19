@@ -6,9 +6,9 @@
     </div>
     <div id="resultDiv" fxLayout="row wrap" class="profile-info-div mat-elevation-z4">
         <div style="display:flex; align-items: center; justify-content: center;" fxFlex.gt-sm="30" fxFlex.gt-xs="30" fxFlex="100">
-            <img class="profile-image" src="{{ userProfile.photoUrl }}">
+            <img id="profileImageId" class="profile-image profileImage" src="{{ userProfile.photoUrl }}">
         </div>
-        <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" fxFlex="100">
+        <div style="padding-left: 20px;" fxFlex.gt-sm="70" fxFlex.gt-xs="70" fxFlex="100">
             <div><h2><strong>{{ userProfile.firstName }} {{ userProfile.lastName }}</strong></h2></div>
             <div><h4><span class="profile-subtitle-span">Phone : </span>{{ userProfile.phone }}</h4></div>
             <div><h4><span class="profile-subtitle-span">Email : </span>{{ userProfile.email }}</h4></div>
