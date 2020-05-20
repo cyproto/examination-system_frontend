@@ -1,4 +1,7 @@
 <div class="outer-div" *ngIf="userProfile">
+    <div fxLayout="row wrap">
+        <button (click)="logout()" class="logout-button" mat-raised-button>Logout <mat-icon>exit_to_app</mat-icon></button>
+    </div>
     <div fxLayout="row wrap" style=" display:flex; align-items: center; justify-content: center;">
         <h2 class="profile-header">
             Result

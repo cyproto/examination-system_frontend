@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import * as jsPDF from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { element } from 'protractor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -21,7 +22,8 @@ export class ProfileComponent implements OnInit {
   percentage: number = 0;
   passingCutOff: number = 35;
   grade: String;
-  constructor( private angularFirestore: AngularFirestore ) { 
+
+  constructor( private router: Router, private angularFirestore: AngularFirestore ) { 
     this.userEmail = sessionStorage.getItem( 'userEmail' );
     firebase.firestore().collection( 'users' ).where( firebase.firestore.FieldPath.documentId(), '==', this.userEmail ).get()
     .then( result => {
@@ -61,8 +63,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  logout() {
+    sessionStorage.setItem( 'userEmail', null );
+    this.router.navigate(['../../login']);
+  }
+
   saveResult() {
-    
     var pdf = new jsPDF( 'l', 'pt', [800, 470] );
 
     pdf.setDrawColor( 0 );
@@ -124,7 +130,6 @@ export class ProfileComponent implements OnInit {
     img.src = '../../../assets/images/verified_logo.png';
     pdf.addImage( img, 'png', 660, 370, 50, 50 );
 
-    pdf.save( this.userEmail + '.pdf' );
-    
+    pdf.save( this.userEmail + '.pdf' );  
   }
 }
