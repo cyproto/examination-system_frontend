@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import * as jsPDF from 'jspdf';
-import domtoimage from 'dom-to-image';
-import { element } from 'protractor';
 import { Router } from '@angular/router';
+import { ProfileService } from './profile.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,8 +14,9 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit {
 
   userEmail: string = '';
+  getResultApiResponse: any;
   userProfile: any;
-  questionsData: any [];
+  questionsData: any;
   questionsCount: number = 0;
   correctAnswersCount: number = 0;
   attemptedQuestionsCount: number = 0;
@@ -23,20 +24,37 @@ export class ProfileComponent implements OnInit {
   passingCutOff: number = 35;
   grade: String;
 
-  constructor( private router: Router, private angularFirestore: AngularFirestore ) { 
+  constructor( private profileService: ProfileService, private router: Router, private angularFirestore: AngularFirestore ) { 
     this.userEmail = sessionStorage.getItem( 'userEmail' );
+    this.getResultFromBlockchain();
     firebase.firestore().collection( 'users' ).where( firebase.firestore.FieldPath.documentId(), '==', this.userEmail ).get()
     .then( result => {
       result.forEach( element => {
         this.userProfile = element.data();
-        this.questionsData = this.userProfile['examQuestions'];
         console.log( this.userProfile );
       });
-      this.calculateMarks( this.questionsData );
+
+      //this.calculateMarks( this.questionsData );
     });
   }
 
   ngOnInit() {
+  }
+
+  getResultFromBlockchain() {
+    this.profileService.getResult( this.userEmail ).subscribe( data => {
+      console.log( data );
+      this.questionsData = data['examQuestions'];
+      this.grade = data['grade'];
+      this.correctAnswersCount = data['correctAnswersCount'];
+      this.percentage = data['percentage'];
+      this.questionsCount = data['questionsCount'];
+      data['examQuestions'].forEach( ( element, index, array ) => {
+        if( null != element['selectedOption'] ) {
+          this.attemptedQuestionsCount++;
+        }
+      });
+    });
   }
 
   calculateMarks( questionsData ) {
