@@ -20,6 +20,7 @@ export class TestComponent implements OnInit {
   usersCollection: any;
   currentQuestionIndex: any;
   isExamSubmittedFlag: any;
+  passingCutOff: number = 35;
   isGivingTestFirstTimeFlag: any;
   isStartTestClicked: boolean = false;
   instructionPageTimer: number = 60;
@@ -188,6 +189,16 @@ export class TestComponent implements OnInit {
           examQuestions: this.questionsArray
         }
         this.testService.updateUser(this.userEmail, user);
+
+        let requestBody = {
+          emailId: this.userEmail, 
+          questionsData: this.questionsArray,
+          passingCutOff: this.passingCutOff
+        }
+        this.testService.sendResult( requestBody ).subscribe( data => {
+          console.log( 'inserted' );
+        });
+
         this.router.navigate(['./after-test-submit'], {relativeTo: this.activatedRoute})
       } else {
         return;

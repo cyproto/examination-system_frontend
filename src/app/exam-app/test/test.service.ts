@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class TestService {
 
   userCollection: any;
-  constructor(private firestore: AngularFirestore) { 
+  constructor(private firestore: AngularFirestore, private http: HttpClient) { 
     this.userCollection = this.firestore.collection('users');
   }
 
@@ -15,4 +16,9 @@ export class TestService {
     console.log(userEmail,user);
     this.userCollection.doc(userEmail).update(user);
   }
+
+  sendResult( requestBody: any ) {
+    console.log( requestBody);
+    return this.http.post('http://localhost:8080/sendResult/', requestBody ).pipe();
+  } 
 }
