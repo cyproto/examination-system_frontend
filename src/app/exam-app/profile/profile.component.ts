@@ -24,9 +24,12 @@ export class ProfileComponent implements OnInit {
   percentage: number = 0;
   passingCutOff: number = 35;
   grade: String;
-  qrCodeString = 'http://localhost:8080/getResult/?emailId=';
+  qrCodeString = 'https://exam-result-panel.firebaseapp.com/view-result?emailId=';
+
   constructor( private profileService: ProfileService, private router: Router, private angularFirestore: AngularFirestore ) { 
+    
     this.userEmail = sessionStorage.getItem( 'userEmail' );
+    this.qrCodeString += this.userEmail;
     this.getResultFromBlockchain();
     firebase.firestore().collection( 'users' ).where( firebase.firestore.FieldPath.documentId(), '==', this.userEmail ).get()
     .then( result => {
@@ -34,8 +37,6 @@ export class ProfileComponent implements OnInit {
         this.userProfile = element.data();
         console.log( this.userProfile );
       });
-
-      //this.calculateMarks( this.questionsData );
     });
   }
 
@@ -55,30 +56,6 @@ export class ProfileComponent implements OnInit {
           this.attemptedQuestionsCount++;
         }
       });
-    });
-  }
-
-  calculateMarks( questionsData ) {
-    this.questionsCount = questionsData.length;
-    let promise = new Promise( ( resolve, reject ) => {
-      questionsData.forEach( ( element, index, array ) => {
-        if( element['correct_option'] == element['selectedOption'] ) {
-          this.correctAnswersCount++ ;
-        }
-        if( null != element['selectedOption'] ) {
-          this.attemptedQuestionsCount++;
-        }
-        if( index == array.length-1 ) resolve();
-      });
-    });
-
-    promise.then( () => {
-      this.percentage = Math.round( this.correctAnswersCount/this.questionsCount*100 );
-      if( this.percentage > this.passingCutOff ) {
-        this.grade = 'Passed';
-      } else {
-        this.grade = 'Failed'
-      }
     });
   }
 
