@@ -10,8 +10,7 @@ import { TestComponent } from './test/test.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ConfirmSubmitComponent } from './test/confirm-submit/confirm-submit.component';
 import { AfterTestSubmitComponent } from './test/after-test-submit/after-test-submit.component';
-
-
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [ExamAppComponent, TestComponent, ProfileComponent, ConfirmSubmitComponent, AfterTestSubmitComponent],
@@ -33,7 +32,8 @@ import { AfterTestSubmitComponent } from './test/after-test-submit/after-test-su
     MatRippleModule,
     MatRadioModule,
     MatDialogModule,
-    FlexLayoutModule.withConfig({addFlexToParent: false})
+    FlexLayoutModule.withConfig({addFlexToParent: false}),
+    QRCodeModule
   ],
   providers:[
     AngularFirestore

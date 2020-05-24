@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import * as jsPDF from 'jspdf';
+import domtoimage from 'dom-to-image';
 import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
-import { Observable } from 'rxjs';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +24,7 @@ export class ProfileComponent implements OnInit {
   percentage: number = 0;
   passingCutOff: number = 35;
   grade: String;
-
+  qrCodeString = 'http://localhost:8080/getResult/?emailId=';
   constructor( private profileService: ProfileService, private router: Router, private angularFirestore: AngularFirestore ) { 
     this.userEmail = sessionStorage.getItem( 'userEmail' );
     this.getResultFromBlockchain();
@@ -143,11 +144,14 @@ export class ProfileComponent implements OnInit {
     pdf.setTextColor( 0, 0, 0 );
     pdf.text( 590, 440, 'Scan QR code to verify integrity');
     pdf.text( 590, 450, 'of this certificate.');
+    
+    var verifiedLogo = new Image();
+    verifiedLogo.src = '../../../assets/images/verified_logo.png';
+    pdf.addImage( verifiedLogo, 'png', 660, 370, 50, 55 );
 
-    var img = new Image();
-    img.src = '../../../assets/images/verified_logo.png';
-    pdf.addImage( img, 'png', 660, 370, 50, 50 );
+    var qrCodeElement = document.getElementById('qrCode').firstChild.firstChild;
+    pdf.addImage(qrCodeElement, 'png', 400, 310, 150, 150 )
 
-    pdf.save( this.userEmail + '.pdf' );  
+    pdf.save( this.userEmail + '.pdf' );
   }
 }
