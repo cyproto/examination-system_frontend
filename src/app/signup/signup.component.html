@@ -96,11 +96,13 @@
                         <mat-error *ngIf="submitted && photoDownloadUrl == null">
                             Photo <strong>required</strong>
                         </mat-error>
-                        <button style="margin-left: 10px;" color="primary" mat-mini-fab (click)="photoUpload.click()">
+                        <button style="margin-left: 10px; background-color: #0779e4;" mat-mini-fab (click)="photoUpload.click()">
                             <mat-icon>attach_file</mat-icon>
                         </button>
                         <div *ngIf="photoDownloadUrl">
-                            View uploaded image:<a target="_blank" href="{{photoDownloadUrl}}"><mat-icon>visibility</mat-icon></a>
+                            <div class="user-avatar-div">
+                                <img class="user-avatar" src="{{photoDownloadUrl}}">
+                            </div>
                         </div>
                     <mat-progress-bar class="image-upload-progress-bar" [value]="(photoUploadProgress | async)">
                     </mat-progress-bar>
@@ -108,8 +110,8 @@
             </div>
             <div fxFlex style="margin-top: 40px;"fxLayout="row" fxLayout.lt-md="column" class="each-row">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                    <button style="width: 45%;" mat-raised-button color="primary"  (click)="onSignup()">Sign Up</button>
-                    <button style="width: 45%; margin-left: 10%;" mat-stroked-button color="warn" (click)="onCancel()" type="reset">Cancel</button>
+                    <button style="width: 45%;" mat-raised-button class="signup-button" (click)="onSignup()"><span style="font-weight: bold;">Sign Up</span></button>
+                    <button style="width: 45%; margin-left: 10%; border-radius: 30px;" mat-stroked-button color="warn" (click)="onCancel()" type="reset">Cancel</button>
                 </div>
             </div>
             <div fxFlex style="text-align: center; margin-top: 30px;"fxLayout="row" fxLayout.lt-md="column" class="each-row">
