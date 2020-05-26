@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
+
 export class TestComponent implements OnInit {
 
   interval: any;
@@ -34,16 +35,42 @@ export class TestComponent implements OnInit {
     this.userEmail = sessionStorage.getItem('userEmail');
     this.isExamSubmittedFlag = sessionStorage.getItem('isExamSubmittedFlag');
     this.isGivingTestFirstTimeFlag = sessionStorage.getItem('isGivingTestFirstTimeFlag');
+
     console.log(this.isGivingTestFirstTimeFlag);
+
     router.events.subscribe((event: NavigationStart) => {
         if (event.navigationTrigger === 'popstate' || 'null' == this.userEmail ) {
           this.router.navigate(['../../login'])
         }
-      });
+    });
+
+    document.onkeydown = function(e) {
+      if(e.keyCode == 123) {
+          return false;
+      }
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+          return false;
+      }
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+          return false;
+      }
+      if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+          return false;
+      }
+      if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+          return false;
+      }
+      if(e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) {
+        return false;
+      }
+      if(e.ctrlKey && e.keyCode == 'V'.charCodeAt(0)) {
+        return false;
+      }
+    }
   }
 
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
-    //this.logoutUser();
+    this.logoutUser();
   }
 
   ngOnInit() {

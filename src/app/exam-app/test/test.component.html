@@ -15,8 +15,8 @@
         <mat-divider></mat-divider>
         <mat-list-item>
             <mat-icon mat-list-icon>emoji_objects</mat-icon>
-            <div mat-line><span style="font-weight: bold;">Do not</span> click back button anytime while taking the
-                test.</div>
+            <div mat-line><span style="font-weight: bold;">Do not</span> click back button or refresh the tab anytime while taking the
+                test, or you will be <span style="font-weight: bold;">logged out</span></div>
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item>
@@ -31,11 +31,11 @@
     </mat-list>
     <div class="start-test-button-div" fxLayout="row wrap" fxLayoutAlign="center">
         <button color="primary" class="start-test-button" mat-raised-button (click)="startTest()">
-            <h3>Start Test</h3>
+            <span style="font-weight: bold;">Start Test</span>
         </button>
     </div>
 </div>
-<div *ngIf="isStartTestClicked && currentQuestion" style="margin: 5%;">
+<div *ngIf="isStartTestClicked && currentQuestion" style="margin: 5%;" oncontextmenu="return false;">
     <h2 style="text-align: right; margin-right: 20px;">
         <span class="test-timer-text">Test ends in</span>
         <span class="instruction-timer-span"> {{ testMinutes }} m {{ testSeconds }} s</span>
