@@ -1,4 +1,7 @@
-<div class="outer-div" *ngIf="userProfile">
+<div class="mat-spinner-div" *ngIf="!userProfile || !questionsData">
+    <mat-spinner [diameter]="60"></mat-spinner>
+</div>
+<div class="outer-div" *ngIf="userProfile && questionsData">
     <div fxLayout="row wrap">
         <button (click)="logout()" class="logout-button" mat-raised-button>Logout <mat-icon>exit_to_app</mat-icon></button>
     </div>
@@ -13,9 +16,9 @@
         </div>
         <div style="padding-left: 20px;" fxFlex.gt-sm="70" fxFlex.gt-xs="70" fxFlex="100">
             <div><h2><strong>{{ userProfile.firstName }} {{ userProfile.lastName }}</strong></h2></div>
-            <div><h4><span class="profile-subtitle-span">Phone : </span>{{ userProfile.phone }}</h4></div>
-            <div><h4><span class="profile-subtitle-span">Email : </span>{{ userProfile.email }}</h4></div>
-            <div><h4><span class="profile-subtitle-span">Date of Birth : </span>{{ userProfile.dob.toDate() | date }}</h4></div>
+            <div><h4><span class="profile-subtitle-span">PHONE: </span>{{ userProfile.phone }}</h4></div>
+            <div><h4><span class="profile-subtitle-span">EMAIL: </span>{{ userProfile.email }}</h4></div>
+            <div><h4><span class="profile-subtitle-span">DATE OF BIRTH: </span>{{ userProfile.dob.toDate() | date }}</h4></div>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
             <h3>
@@ -25,31 +28,31 @@
             </h3>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-           <h3 class="result-summary-subtitle"> Grade : </h3>
+           <h3 class="result-summary-subtitle"> GRADE : </h3>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
            <h3 class="result-summary-data"><span [ngClass]="(grade=='Passed')?'passed-class':'failed-class'">{{grade}}</span></h3>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-subtitle"> Correct Answers : </h3>
+            <h3 class="result-summary-subtitle"> CORRECT ANSWERS : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-data"><span>{{correctAnswersCount}} / {{questionsCount}}</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-subtitle"> Attempted Questions : </h3>
+            <h3 class="result-summary-subtitle"> ATTEMPTED QUETIONS : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-data"><span>{{attemptedQuestionsCount}} / {{questionsCount}}</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-subtitle"> Percentage : </h3>
+            <h3 class="result-summary-subtitle"> PERCENTAGE : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-data"><span>{{percentage}} %</span></h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
-            <h3 class="result-summary-subtitle"> Examination date : </h3>
+            <h3 class="result-summary-subtitle"> EXAMINATION DATE : </h3>
          </div>
          <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="result-summary-data"><span>{{ userProfile.testEndTimeStamp*1000 | date }}</span></h3>

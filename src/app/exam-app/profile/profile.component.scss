@@ -43,6 +43,7 @@
 
 .result-summary-subtitle {
     margin-left: 30%;
+    letter-spacing: 2px;
 }
 
 .result-summary-data {
@@ -110,4 +111,15 @@
     font-weight: bolder;
     background-color: #d9455f;
     color: white;
+}
+
+.mat-spinner-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.profile-subtitle-span {
+    letter-spacing: 2px;
 }

@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import * as jsPDF from 'jspdf';
-import domtoimage from 'dom-to-image';
 import { Router } from '@angular/router';
 import { ProfileService } from './profile.service';
-import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-profile',
@@ -124,7 +122,7 @@ export class ProfileComponent implements OnInit {
     
     var verifiedLogo = new Image();
     verifiedLogo.src = '../../../assets/images/verified_logo.png';
-    pdf.addImage( verifiedLogo, 'png', 660, 370, 50, 55 );
+    pdf.addImage( verifiedLogo, 'png', 660, 370, 50, 50 );
 
     var qrCodeElement = document.getElementById('qrCode').firstChild.firstChild;
     pdf.addImage(qrCodeElement, 'png', 400, 310, 150, 150 )

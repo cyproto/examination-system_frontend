@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExamAppComponent } from './exam-app.component';
 import { ExamAppRoutingModule } from './exam-app-routing.module';
-import { MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule, MatIconModule, MatListModule, MatDividerModule, MatRippleModule, MatDialogModule } from '@angular/material';
+import { MatRadioModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule, MatProgressBarModule, MatIconModule, MatListModule, MatDividerModule, MatRippleModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -33,7 +33,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     MatRadioModule,
     MatDialogModule,
     FlexLayoutModule.withConfig({addFlexToParent: false}),
-    QRCodeModule
+    QRCodeModule,
+    MatProgressSpinnerModule
   ],
   providers:[
     AngularFirestore
